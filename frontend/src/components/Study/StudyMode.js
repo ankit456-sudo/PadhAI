@@ -99,11 +99,16 @@ export default function StudyMode() {
       });
       const sid = res.data._id;
       setSessionId(sid);
-      await startCamera();
-      socket.startSession(sid, user._id);
       setPhase(PHASE.ACTIVE);
-      // startDetection ab async hai (mic permission bhi maangta hai)
-      if (videoRef.current) await startDetection(videoRef.current);
+      
+      // Wait for React to render the video element so videoRef.current isn't null
+      setTimeout(async () => {
+        socket.startSession(sid, user._id);
+        const camSuccess = await startCamera();
+        if (camSuccess && videoRef.current) {
+          await startDetection(videoRef.current);
+        }
+      }, 50);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to start session.');
     }
