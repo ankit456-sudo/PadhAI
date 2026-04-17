@@ -106,8 +106,8 @@ export const useDistractionDetection = ({ enabled, onDistraction }) => {
       const predictions = await modelRef.current.detect(videoRef.current);
 
       const persons = predictions.filter(p => p.class === PERSON_CLASS && p.score > 0.50);
-      // Reduced threshold further to 0.20 to catch more phones correctly
-      const phones  = predictions.filter(p => PHONE_CLASSES.includes(p.class) && p.score > 0.20);
+      // Dropped threshold completely. Any prediction of a phone or remote will trigger.
+      const phones  = predictions.filter(p => PHONE_CLASSES.includes(p.class));
 
       // 1. Koi nahi baitha
       if (persons.length === 0) {

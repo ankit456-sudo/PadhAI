@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { useStudySocket } from '../../hooks/useStudySocket';
+import { useStudySocket, initAudioContext } from '../../hooks/useStudySocket';
 import { useDistractionDetection } from '../../hooks/useDistractionDetection';
 
 const SUBJECTS = ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'Computer Science', 'English', 'History', 'Geography', 'Economics', 'Other'];
@@ -91,6 +91,7 @@ export default function StudyMode() {
   };
 
   const handleStart = async () => {
+    initAudioContext();
     setError('');
     try {
       const res = await axios.post('/api/sessions', {

@@ -86,6 +86,19 @@ export const useStudySocket = () => {
 
 let audioCtx = null;
 
+export const initAudioContext = () => {
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  } catch (e) {
+    console.warn('Audio init fail:', e);
+  }
+};
+
 function playAlert() {
   try {
     if (!audioCtx) {
